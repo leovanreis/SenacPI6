@@ -1,0 +1,394 @@
+@fonte-face{
+	font-family: 'OpenSans';
+	src: url("../fonts/Open_Sans/OpenSans-Regular.ttf");
+	font-size: 1em;
+}
+@fonte-face{
+	font-family: 'OpenSans-Light';
+		src: url("../fonts/Open_Sans/OpenSans-Light.ttf");
+	font-size: 1em;
+}
+header{
+	width: 100%;
+	height: 150px;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 2;
+	position: relative;
+}
+
+header .container{
+	position: relative;
+}
+
+header .header-verde{
+	background-color: #016738;
+	height: 40px;
+}
+
+header .header-verde li {
+	background-image: url("../img/midias.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+	margin: 4px;
+}
+header .header-verde li.instagram {
+	background-position: -59px -277px;
+		
+}
+header .header-verde li.facebook, a.facebook {
+	background-position: -25px -277px;
+}
+header .header-verde li.club-03 {
+	background-position: -95px 0px;
+}
+
+header .header-verde li a {
+	width: 32px;
+	height: 32px;
+	display: block;
+}
+
+
+header #logotipo{
+	position: absolute;
+	top: 25px;
+	z-index: 3;
+}
+
+#banner small.efeito{
+	color: #e7bf56;
+	font-size: 0.5em;
+}
+
+#menu { 
+	position: absolute;
+	right: 0;
+	margin: 26px 0;
+	top: 10px;
+}
+#menu li {
+	color: #000;
+	position:relative;
+	display: inline-block;
+	font-family: "OpenSans";
+}
+
+#menu li.pesquisar{
+	width: 182px;
+}
+#menu li.pesquisar.ativo input{
+	width: 290px;
+}
+
+#menu li.pesquisar input{
+	background-color: #e7bf56;
+	color: #fff;
+	border: none;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 8px;	
+}
+#menu li.pesquisar ::-webkit-input-placeholder{
+  color: rgba(255, 255, 255, .5);
+}
+#menu li.pesquisar button{
+ background: none;
+ border: none;
+ position: absolute;
+ right: -12px;
+ top: 2px;
+}
+#menu li.pesquisar button i{ 
+ font-size: 14px;
+ color: rgba(255, 255, 255, .5);
+}
+
+#menu li a {
+ color: #016738;
+ font-size: 16px;
+ padding: 0px 25px;
+ font-weight: bold;
+}
+
+#banner{
+	width: 100%;
+	height: 728px;
+	position: relative;
+	background: url("../img/banner.jpg") no-repeat;
+	background-position: 0 -110px;
+	background-size: 100%;
+	top: -110px;
+}
+
+#banner h1{
+	font-size: 92px;
+	top: 300px;
+	position: relative;
+	margin-left: 50px;
+	color: #fff;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, .80);
+	font-family: 'OpenSans-Light'
+}
+#banner h1 small{
+	transition: 1s;
+	display: block;
+	font-size: 32px;
+	font-family: 'OpenSans';
+	font-weight: bold;
+}
+
+#noticias {
+ 	position: relative;
+    top: -150px;
+    margin-bottom: -90px;
+}
+
+#noticias h2 {
+	color: rgb(84, 41, 2);
+ 	font-family: 'OpenSans-Light';
+ 	font-size: 48px;
+	text-transform: uppercase;
+ 	position: relative;
+	margin: 0 auto;
+}
+
+#noticias hr{
+	display:block;
+	border: #ffd700 solid 8px;
+	width: 200px;
+	margin: 0 auto;
+	margin-top: 8px;
+}
+
+#noticias .thumbnails{
+	margin-top: 30px;
+}
+
+#noticias  .thumbnails h3 {
+ color: rgb(84, 41, 2);
+ font-size: 18px;
+ font-family: 'OpenSans';
+ font-weight: bold;
+ margin-top: 10px;
+ margin-bottom: 0;
+}
+#noticias  .thumbnails time {
+ color:#A7A7A7;
+ font-size: 18px;
+ font-family: 'OpenSans';
+}
+
+#noticias .thumbnails .item-inner{
+    padding: 10px;
+}
+
+#noticias .thumbnails .item-inner img{
+    width: 100%;
+}
+
+#estatisticas{
+	background-color: rgb(84, 41, 2);
+	width: 100%;
+	height: 200px;
+}
+
+#estatisticas p {
+	color: #FDE092;
+	text-transform: uppercase;
+	font-family: 'OpenSans-Light';
+	font-size: 64px;
+	margin-top: 36px;
+	margin-left: 50px;
+}
+
+#estatisticas p small{
+	color: #FFF;
+	font-size: 24px;
+	display: block;
+}
+#call-to-action{
+	text-align: center;
+	margin-top: 105px;
+}
+
+#call-to-action h2 {
+	color: rgb(84, 41, 2);
+ 	font-family: 'OpenSans-Light';
+ 	font-size: 48px;
+	text-transform: uppercase;
+ 	position: relative;
+ 	margin: 0 auto;
+}
+
+#call-to-action hr{
+	display:block;
+	border: #ffd700 solid 8px;
+	width: 200px;
+	margin: 0 auto;
+}
+
+#call-to-action p {
+	margin-top: 60px;
+	margin-bottom: 40px;
+}
+
+#call-to-action .btn{
+	min-width: 164px;
+	height: 44px;
+	line-height: 32px;
+	border-color: #000;
+	border-radius: 0;
+}
+
+#call-to-action .btn-verde{
+	color: #fff;
+	background-color: #2ecc71;
+	border-color: #016738;
+}
+
+#call-to-action .btn-amarelo{
+	color: #000;
+	background-color: #f39c12;
+}
+
+#call-to-action .row-max-400{
+	margin: 0 auto;
+	max-width: 400px;
+}
+
+footer{
+	width: 100%;
+	margin-top: 100px;
+}
+
+footer .row{
+	width: 100%;
+	margin-left: 0;
+}
+
+footer .row-cinza{
+	height: 200px;
+	background-color: #171F26;
+}
+
+footer .row-cinza-escuro{
+	height: 60px;
+	background-color: #11171D;
+	border-top: #242D37 1px solid;
+}
+
+footer .row p {
+	line-height: 55px;
+	margin-bottom: 0;
+}
+
+footer .float-left{
+	color: #666;
+	font-family: "OpenSans";
+	font-size: 16px;
+}
+
+footer .texto-verde{
+	color: #016738;
+	font-family: "OpenSans";
+	font-weight: bold;
+	font-size: 14px;
+}
+
+footer .logotipo{
+	margin-top: 28px;
+}
+
+footer .col-popular-posts{
+	margin-top: 28px;
+}
+
+footer .col-navegue{
+	margin-top: 28px;
+}
+
+footer .col-contate-nos{
+	margin-top: 28px;
+	color: #fff;
+}
+
+footer .row-cols h4{
+	font-family: 'OpenSans';
+	font-size: 16px;
+	color: #FFF;
+	padding-bottom: 17px;
+	border-bottom: #242D37 1px solid;
+}
+
+footer .row-cols h5{
+	color: #666;
+	font-family: Arial;
+	font-size: 14px;
+	margin-bottom: 0;
+}
+
+footer .row-cols time{
+	color: #fde096;
+	font-family: Arial;
+	font-size: 14px;
+}
+
+footer .col-navegue a{
+	color: #fff;
+	font-family: Arial;
+	font-size: 14px;
+}
+
+footer .col-contate-nos address{
+	color: #666;
+	font-family: Arial;
+	font-size: 14px;
+	margin-bottom: 0;
+}
+
+footer .col-contate-nos address span{
+	display: inline-block;
+}
+
+footer .col-contate-nos address i{
+	color: #9b9b9b;
+	position: relative;
+	top: -14px;
+}
+
+footer .col-contate-nos i, footer .col-navegue i, footer .col-popular-posts i {
+	font-size: 20px;
+	margin: 0 10px;
+}
+
+footer .col-contate-nos p{
+	line-height: 20px;
+	color: #9b9b9b;
+}
+
+footer .col-contate-nos a{
+	color: #666;
+}
+
+footer .lista-sociais {
+	margin-top: 15px;
+}
+footer .lista-sociais li {
+	display: inline-block;
+	margin-right: 8px;
+}
+
+footer .lista-sociais a {
+	display: block;
+	border: #9b9b9b 1px solid;
+	width: 28px;
+	height: 28px;
+	line-height: 28px;
+	border-radius:14px;
+	text-align: center;
+}
+
+footer .lista-sociais i {
+	font-size: 16px;
+	margin: 4px auto;
+}
