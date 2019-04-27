@@ -8,18 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.senac.backend.db.utils.ConnectionUtils;
-import br.senac.backend.model.clientes.Cliente;
+import br.senac.backend.model.item.Item;
 
-//Data Access Object de Cliente. Realiza operações de BD com o cliente. 
-public class DaoCliente {
+public class DaoItem {
 
-	// Insere um cliente na tabela "cliente" do banco de dados
-	public static void inserir(Cliente cliente) throws SQLException, Exception {
+	public static void inserir(Item item) throws SQLException, Exception {
 
-		// Monta a string de inserção de um cliente no BD,
-		// utilizando os dados do clientes passados como parâmetro
-		String sql = "INSERT INTO bd_pi6.cliente (nome_cliente, data_nascimento_cliente, sexo_cliente, cpf_cliente, cnpj_cliente, admin, senha) "
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+		// Monta a string de inserção de um item no BD,
+		// utilizando os dados do item passados como parâmetro
+		String sql = "INSERT INTO bd_pi6.itemPedido (qtd_itemPedido) " + " VALUES (?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -36,14 +33,7 @@ public class DaoCliente {
 			preparedStatement = connection.prepareStatement(sql);
 
 			// Configura os parâmetros do "PreparedStatement"
-			preparedStatement.setString(1, cliente.getNome_cliente());
-			preparedStatement.setInt(2, cliente.getData_nascimento_cliente());
-			preparedStatement.setString(3, cliente.getSexo_cliente());
-			preparedStatement.setString(4, cliente.getCpf_cliente());
-			preparedStatement.setString(5, cliente.getCnjp_cliente());
-			preparedStatement.setBoolean(6, cliente.Admin());
-			preparedStatement.setString(7, cliente.getSenha());
-
+			preparedStatement.setInt(1, item.getQtd_item_pedido());
 			preparedStatement.execute();
 
 		} finally {
@@ -62,14 +52,13 @@ public class DaoCliente {
 
 	}
 
-	// Realiza a atualização dos dados de um cliente, com ID e dados
-	// fornecidos como parâmetro através de um objeto da classe "Cliente"
-	public static void atualizar(Cliente cliente) throws SQLException, Exception {
+	// Realiza a atualização dos dados de um item, com ID e dados
+	// fornecidos como parâmetro através de um objeto da classe "Item"
+	public static void atualizar(Item item) throws SQLException, Exception {
 
-		// Monta a string de atualização do cliente no BD, utilizando
+		// Monta a string de atualização do item no BD, utilizando
 		// prepared statement
-		String sql = "UPDATE bd_pi6.cliente SET nome_cliente=?, data_nascimento_cliente=?, cpf_cliente=?, cnpj_cliente, senha"
-				+ "WHERE (id_cliente=?)";
+		String sql = "UPDATE bd_pi6.itemPedido SET qtd_itemPedido=?" + "WHERE (iditemPedido=?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -87,11 +76,7 @@ public class DaoCliente {
 
 			// Configura os parâmetros do "PreparedStatement"
 
-			preparedStatement.setString(1, cliente.getNome_cliente());
-			preparedStatement.setInt(2, cliente.getData_nascimento_cliente());
-			preparedStatement.setString(4, cliente.getCpf_cliente());
-			preparedStatement.setString(5, cliente.getCnjp_cliente());
-			preparedStatement.setString(7, cliente.getSenha());
+			preparedStatement.setInt(1, item.getQtd_item_pedido());
 
 			// Executa o comando no banco de dados
 			preparedStatement.execute();
@@ -112,15 +97,15 @@ public class DaoCliente {
 
 	}
 
-	// Realiza a exclusão lógica de um cliente no BD, com ID fornecido
+	// Realiza a exclusão lógica de um item no BD, com ID fornecido
 	// como parâmetro. A exclusão lógica simplesmente "desliga" o
-	// cliente, configurando um atributo específico, a ser ignorado
-	// em todas as consultas de cliente ("enabled").
+	// item, configurando um atributo específico, a ser ignorado
+	// em todas as consultas de item ("enabled").
 	public static void excluir(Integer id) throws SQLException, Exception {
 
-		// Monta a string de atualização do cliente no BD, utilizando
+		// Monta a string de atualização do item no BD, utilizando
 		// prepared statement
-		String sql = "DELETE FROM bd_pi6.cliente WHERE (id_cliente=?);";
+		String sql = "DELETE FROM bd_pi6.item WHERE (iditemPedido=?);";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -158,15 +143,15 @@ public class DaoCliente {
 
 	}
 
-	// Lista todos os clientes da tabela clientes
-	public static List<Cliente> listar() throws SQLException, Exception {
+	// Lista todos os item da tabela item
+	public static List<Item> listar() throws SQLException, Exception {
 
-		// Monta a string de listagem de clientes no banco, considerando
-		// apenas a coluna de ativação de clientes ("enabled")
-		String sql = "SELECT * FROM bd_pi6.cliente WHERE (id_cliente=?, nome_cliente=?, cpf_cliente=?,  cnpj_cliente=?)";
+		// Monta a string de listagem de item no banco, considerando
+		// apenas a coluna de ativação de item ("enabled")
+		String sql = "SELECT * FROM bd_pi6.item WHERE (qtd_itemPedido=?)";
 
-		// Lista de clientes de resultado
-		List<Cliente> listaClientes = null;
+		// Lista de item de resultado
+		List<Item> listaItem = null;
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -191,20 +176,17 @@ public class DaoCliente {
 			while (result.next()) {
 
 				// Se a lista não foi inicializada, a inicializa
-				if (listaClientes == null) {
-					listaClientes = new ArrayList<Cliente>();
+				if (listaItem == null) {
+					listaItem = new ArrayList<Item>();
 				}
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de Item e popula com os valores do BD
+				Item item = new Item();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				item.setQtd_item_pedido(result.getInt("qtd_itemPedido"));
 
 				// Adiciona a instância na lista
-				listaClientes.add(cliente);
+				listaItem.add(item);
 
 			}
 
@@ -227,27 +209,27 @@ public class DaoCliente {
 
 		}
 
-		// Retorna a lista de clientes do banco de dados
-		return listaClientes;
+		// Retorna a lista de item do banco de dados
+		return listaItem;
 
 	}
 
-	// Procura um cliente no banco de dados, de acordo com o nome
-	// ou com o sobrenome, passado como parâmetro
-	public static List<Cliente> procurar(String valor) throws SQLException, Exception {
+	// Procura um item no banco de dados, de acordo com o id
+	// ou com o qtd, passado como parâmetro
+	public static List<Item> procurar(String valor) throws SQLException, Exception {
 
-		// Monta a string de consulta de clientes no banco, utilizando
+		// Monta a string de consulta de item no banco, utilizando
 		// o valor passado como parâmetro para busca nas colunas de
-		// nome ou sobrenome (através do "LIKE" e ignorando minúsculas
+		// id ou qtd (através do "LIKE" e ignorando minúsculas
 		// ou maiúsculas, através do "UPPER" aplicado à coluna e ao
 		// parâmetro). Além disso, também considera apenas os elementos
-		// que possuem a coluna de ativação de clientes configurada com
+		// que possuem a coluna de ativação de item configurada com
 		// o valor correto ("enabled" com "true")
-		String sql = "SELECT * FROM bd_pi6.cliente WHERE ((UPPER(nome_cliente) LIKE UPPER(?) "
-				+ "OR UPPER(cliente.nome_cliente) LIKE UPPER(?)) AND id_cliente=?)";
+		String sql = "SELECT * FROM bd_pi6.item WHERE ((UPPER(id_item_pedido) LIKE UPPER(?) "
+				+ "OR UPPER(item.qtd_item_pedido) LIKE UPPER(?)) AND iditemPedido=?)";
 
-		// Lista de clientes de resultado
-		List<Cliente> listaClientes = null;
+		// Lista de item de resultado
+		List<Item> listaItem = null;
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -277,20 +259,18 @@ public class DaoCliente {
 			while (result.next()) {
 
 				// Se a lista não foi inicializada, a inicializa
-				if (listaClientes == null) {
-					listaClientes = new ArrayList<Cliente>();
+				if (listaItem == null) {
+					listaItem = new ArrayList<Item>();
 				}
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de Item e popula com os valores do BD
+				Item item = new Item();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				item.setId_item_pedido(result.getInt("iditemPedido"));
+				item.setQtd_item_pedido(result.getInt("qtd_itemPedido"));
 
 				// Adiciona a instância na lista
-				listaClientes.add(cliente);
+				listaItem.add(item);
 
 			}
 
@@ -313,18 +293,18 @@ public class DaoCliente {
 
 		}
 
-		// Retorna a lista de clientes do banco de dados
-		return listaClientes;
+		// Retorna a lista de item do banco de dados
+		return listaItem;
 
 	}
 
-	// Obtém uma instância da classe "Cliente" através de dados do
-	// banco de dados, de acordo com o ID fornecido como parâmetro
-	public static Cliente obter(Integer id) throws SQLException, Exception {
+//Obtém uma instância da classe "Pedido" através de dados do
+//banco de dados, de acordo com o ID fornecido como parâmetro
+	public static Item obter(Integer id) throws SQLException, Exception {
 
-		// Compõe uma String de consulta que considera apenas o cliente
+		// Compõe uma String de consulta que considera apenas o item
 		// com o ID informado e que esteja ativo ("enabled" com "true")
-		String sql = "SELECT * FROM cliente.bd_pi6.cliente WHERE (id_cliente=? AND enabled=?)";
+		String sql = "SELECT * FROM item.bd_pi6.i WHERE (iditemPedido=? AND enabled=?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -351,18 +331,14 @@ public class DaoCliente {
 			// Verifica se há pelo menos um resultado
 			if (result.next()) {
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de item e popula com os valores do BD
+				Item item = new Item();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setData_nascimento_cliente(result.getInt("data_nascimento_cliente"));
-				cliente.setSexo_cliente(result.getString("sexo_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				item.setId_item_pedido(result.getInt("iditemPedido"));
+				item.setQtd_item_pedido(result.getInt("qtd_itemPedido"));
 
 				// Retorna o resultado
-				return cliente;
+				return item;
 
 			}
 

@@ -4,22 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.senac.backend.db.utils.ConnectionUtils;
-import br.senac.backend.model.clientes.Cliente;
+import br.senac.backend.model.pedido.Pedido;
 
-//Data Access Object de Cliente. Realiza operações de BD com o cliente. 
-public class DaoCliente {
+public class DaoPedido {
 
-	// Insere um cliente na tabela "cliente" do banco de dados
-	public static void inserir(Cliente cliente) throws SQLException, Exception {
+	// Insere um pedido na tabela "pedido" do banco de dados
+	public static void inserir(Pedido pedido) throws SQLException, Exception {
 
-		// Monta a string de inserção de um cliente no BD,
-		// utilizando os dados do clientes passados como parâmetro
-		String sql = "INSERT INTO bd_pi6.cliente (nome_cliente, data_nascimento_cliente, sexo_cliente, cpf_cliente, cnpj_cliente, admin, senha) "
-				+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+		// Monta a string de inserção de um pedido no BD,
+		// utilizando os dados do pedidos passados como parâmetro
+		String sql = "INSERT INTO bd_pi6.pedido (data_pedido, numero_pedido) " + " VALUES (?, ?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -36,13 +35,9 @@ public class DaoCliente {
 			preparedStatement = connection.prepareStatement(sql);
 
 			// Configura os parâmetros do "PreparedStatement"
-			preparedStatement.setString(1, cliente.getNome_cliente());
-			preparedStatement.setInt(2, cliente.getData_nascimento_cliente());
-			preparedStatement.setString(3, cliente.getSexo_cliente());
-			preparedStatement.setString(4, cliente.getCpf_cliente());
-			preparedStatement.setString(5, cliente.getCnjp_cliente());
-			preparedStatement.setBoolean(6, cliente.Admin());
-			preparedStatement.setString(7, cliente.getSenha());
+			Timestamp t = new Timestamp(pedido.getData_pedido().getTime());
+			preparedStatement.setTimestamp(1, t);
+			preparedStatement.setInt(2, pedido.getNumero_pedido());
 
 			preparedStatement.execute();
 
@@ -62,14 +57,13 @@ public class DaoCliente {
 
 	}
 
-	// Realiza a atualização dos dados de um cliente, com ID e dados
-	// fornecidos como parâmetro através de um objeto da classe "Cliente"
-	public static void atualizar(Cliente cliente) throws SQLException, Exception {
+	// Realiza a atualização dos dados de um pedido, com ID e dados
+	// fornecidos como parâmetro através de um objeto da classe "Pedido"
+	public static void atualizar(Pedido pedido) throws SQLException, Exception {
 
-		// Monta a string de atualização do cliente no BD, utilizando
+		// Monta a string de atualização do pedido no BD, utilizando
 		// prepared statement
-		String sql = "UPDATE bd_pi6.cliente SET nome_cliente=?, data_nascimento_cliente=?, cpf_cliente=?, cnpj_cliente, senha"
-				+ "WHERE (id_cliente=?)";
+		String sql = "UPDATE bd_pi6.pedido SET data_pedido=?, numero_pedido=?" + "WHERE (idpedido=?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -87,11 +81,9 @@ public class DaoCliente {
 
 			// Configura os parâmetros do "PreparedStatement"
 
-			preparedStatement.setString(1, cliente.getNome_cliente());
-			preparedStatement.setInt(2, cliente.getData_nascimento_cliente());
-			preparedStatement.setString(4, cliente.getCpf_cliente());
-			preparedStatement.setString(5, cliente.getCnjp_cliente());
-			preparedStatement.setString(7, cliente.getSenha());
+			Timestamp t = new Timestamp(pedido.getData_pedido().getTime());
+			preparedStatement.setTimestamp(1, t);
+			preparedStatement.setInt(2, pedido.getNumero_pedido());
 
 			// Executa o comando no banco de dados
 			preparedStatement.execute();
@@ -112,15 +104,15 @@ public class DaoCliente {
 
 	}
 
-	// Realiza a exclusão lógica de um cliente no BD, com ID fornecido
+	// Realiza a exclusão lógica de um pedido no BD, com ID fornecido
 	// como parâmetro. A exclusão lógica simplesmente "desliga" o
-	// cliente, configurando um atributo específico, a ser ignorado
-	// em todas as consultas de cliente ("enabled").
+	// pedido, configurando um atributo específico, a ser ignorado
+	// em todas as consultas de pedido ("enabled").
 	public static void excluir(Integer id) throws SQLException, Exception {
 
-		// Monta a string de atualização do cliente no BD, utilizando
+		// Monta a string de atualização do pedido no BD, utilizando
 		// prepared statement
-		String sql = "DELETE FROM bd_pi6.cliente WHERE (id_cliente=?);";
+		String sql = "DELETE FROM bd_pi6.pedido WHERE (idpedido=?);";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -158,15 +150,15 @@ public class DaoCliente {
 
 	}
 
-	// Lista todos os clientes da tabela clientes
-	public static List<Cliente> listar() throws SQLException, Exception {
+	// Lista todos os pedido da tabela pedido
+	public static List<Pedido> listar() throws SQLException, Exception {
 
-		// Monta a string de listagem de clientes no banco, considerando
-		// apenas a coluna de ativação de clientes ("enabled")
-		String sql = "SELECT * FROM bd_pi6.cliente WHERE (id_cliente=?, nome_cliente=?, cpf_cliente=?,  cnpj_cliente=?)";
+		// Monta a string de listagem de pedidos no banco, considerando
+		// apenas a coluna de ativação de pedido ("enabled")
+		String sql = "SELECT * FROM bd_pi6.pedidos WHERE (data_pedido=?, numero_pedido=?)";
 
-		// Lista de clientes de resultado
-		List<Cliente> listaClientes = null;
+		// Lista de pedido de resultado
+		List<Pedido> listaPedidos = null;
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -191,20 +183,19 @@ public class DaoCliente {
 			while (result.next()) {
 
 				// Se a lista não foi inicializada, a inicializa
-				if (listaClientes == null) {
-					listaClientes = new ArrayList<Cliente>();
+				if (listaPedidos == null) {
+					listaPedidos = new ArrayList<Pedido>();
 				}
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de Pedido e popula com os valores do BD
+				Pedido pedido = new Pedido();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				java.util.Date d = new java.util.Date(result.getTimestamp("data_pedido").getTime());
+				pedido.setData_pedido(d);
+				pedido.setNumero_pedido(result.getInt("numero_pedido"));
 
 				// Adiciona a instância na lista
-				listaClientes.add(cliente);
+				listaPedidos.add(pedido);
 
 			}
 
@@ -227,27 +218,27 @@ public class DaoCliente {
 
 		}
 
-		// Retorna a lista de clientes do banco de dados
-		return listaClientes;
+		// Retorna a lista de pedido do banco de dados
+		return listaPedidos;
 
 	}
 
-	// Procura um cliente no banco de dados, de acordo com o nome
+	// Procura um pedido no banco de dados, de acordo com o nome
 	// ou com o sobrenome, passado como parâmetro
-	public static List<Cliente> procurar(String valor) throws SQLException, Exception {
+	public static List<Pedido> procurar(String valor) throws SQLException, Exception {
 
-		// Monta a string de consulta de clientes no banco, utilizando
+		// Monta a string de consulta de pedido no banco, utilizando
 		// o valor passado como parâmetro para busca nas colunas de
-		// nome ou sobrenome (através do "LIKE" e ignorando minúsculas
+		// numero pedido ou data_pedido (através do "LIKE" e ignorando minúsculas
 		// ou maiúsculas, através do "UPPER" aplicado à coluna e ao
 		// parâmetro). Além disso, também considera apenas os elementos
-		// que possuem a coluna de ativação de clientes configurada com
+		// que possuem a coluna de ativação de pedido configurada com
 		// o valor correto ("enabled" com "true")
-		String sql = "SELECT * FROM bd_pi6.cliente WHERE ((UPPER(nome_cliente) LIKE UPPER(?) "
-				+ "OR UPPER(cliente.nome_cliente) LIKE UPPER(?)) AND id_cliente=?)";
+		String sql = "SELECT * FROM bd_pi6.pedido WHERE ((UPPER(numero_pedido) LIKE UPPER(?) "
+				+ "OR UPPER(pedido.data_pedido) LIKE UPPER(?)) AND idpedido=?)";
 
-		// Lista de clientes de resultado
-		List<Cliente> listaClientes = null;
+		// Lista de pedido de resultado
+		List<Pedido> listaPedido = null;
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -277,20 +268,19 @@ public class DaoCliente {
 			while (result.next()) {
 
 				// Se a lista não foi inicializada, a inicializa
-				if (listaClientes == null) {
-					listaClientes = new ArrayList<Cliente>();
+				if (listaPedido == null) {
+					listaPedido = new ArrayList<Pedido>();
 				}
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de Pedido e popula com os valores do BD
+				Pedido pedido = new Pedido();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				java.util.Date d = new java.util.Date(result.getTimestamp("data_pedido").getTime());
+				pedido.setData_pedido(d);
+				pedido.setNumero_pedido(result.getInt("numero_pedido"));
 
 				// Adiciona a instância na lista
-				listaClientes.add(cliente);
+				listaPedido.add(pedido);
 
 			}
 
@@ -313,18 +303,18 @@ public class DaoCliente {
 
 		}
 
-		// Retorna a lista de clientes do banco de dados
-		return listaClientes;
+		// Retorna a lista de pedido do banco de dados
+		return listaPedido;
 
 	}
 
-	// Obtém uma instância da classe "Cliente" através de dados do
+	// Obtém uma instância da classe "Pedido" através de dados do
 	// banco de dados, de acordo com o ID fornecido como parâmetro
-	public static Cliente obter(Integer id) throws SQLException, Exception {
+	public static Pedido obter(Integer id) throws SQLException, Exception {
 
-		// Compõe uma String de consulta que considera apenas o cliente
+		// Compõe uma String de consulta que considera apenas o pedido
 		// com o ID informado e que esteja ativo ("enabled" com "true")
-		String sql = "SELECT * FROM cliente.bd_pi6.cliente WHERE (id_cliente=? AND enabled=?)";
+		String sql = "SELECT * FROM pedido WHERE (idpedido=? AND enabled=?)";
 
 		// Conexão para abertura e fechamento
 		Connection connection = null;
@@ -351,18 +341,15 @@ public class DaoCliente {
 			// Verifica se há pelo menos um resultado
 			if (result.next()) {
 
-				// Cria uma instância de Cliente e popula com os valores do BD
-				Cliente cliente = new Cliente();
+				// Cria uma instância de Pedido e popula com os valores do BD
+				Pedido pedido = new Pedido();
 
-				cliente.setId_cliente(result.getInt("id_cliente"));
-				cliente.setNome_cliente(result.getString("nome_cliente"));
-				cliente.setData_nascimento_cliente(result.getInt("data_nascimento_cliente"));
-				cliente.setSexo_cliente(result.getString("sexo_cliente"));
-				cliente.setCpf_cliente(result.getString("cpf_cliente"));
-				cliente.setCpf_cliente(result.getString("cnpj_cliente"));
+				java.util.Date d = new java.util.Date(result.getTimestamp("data_pedido").getTime());
+				pedido.setData_pedido(d);
+				pedido.setId_pedido(result.getInt("idpedido"));
 
 				// Retorna o resultado
-				return cliente;
+				return pedido;
 
 			}
 

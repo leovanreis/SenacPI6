@@ -12,17 +12,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import br.senac.backend.db.dao.DaoProduto;
-import br.senac.backend.model.produto.Produto;
+import br.senac.backend.db.dao.DaoEndereco;
+import br.senac.backend.model.endereco.Endereco;
 
-@Path("/produto")
-public class ServicoProduto {
+@Path("/endereco")
+public class ServicoEndereco {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void inserirProduto(Produto produto) {
+	public void inserirEndereco(Endereco endereco) {
 		try {
-			DaoProduto.inserir(produto);
+			DaoEndereco.inserir(endereco);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -30,9 +30,9 @@ public class ServicoProduto {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Produto> listarProduto() {
+	public List<Endereco> listarEndereco() {
 		try {
-			return DaoProduto.listar();
+			return DaoEndereco.listar();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,9 +41,9 @@ public class ServicoProduto {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void atualizarProduto(Produto produto) {
+	public void atualizarEndereco(Endereco endereco) {
 		try {
-			DaoProduto.atualizar(produto);
+			DaoEndereco.atualizar(endereco);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,9 +52,9 @@ public class ServicoProduto {
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public void removerProduto(@PathParam("id") Integer id) {
+	public void removerEndereco(@PathParam("id") Integer id) {
 		try {
-			DaoProduto.excluir(id);
+			DaoEndereco.excluir(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
